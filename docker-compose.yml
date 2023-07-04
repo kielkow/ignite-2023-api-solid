@@ -6,6 +6,6 @@ services:
     ports:
       - 5432:5432
     environment:
-      - POSTGRESQL_DATABASE=apisolidpg
-      - POSTGRESQL_USERNAME=postgresql
-      - POSTGRESQL_PASSWORD=postgresql
+      - POSTGRESQL_DATABASE=${POSTGRESQL_DATABASE}
+      - POSTGRESQL_USERNAME=${POSTGRESQL_USERNAME}
+      - POSTGRESQL_PASSWORD=${POSTGRESQL_PASSWORD}
