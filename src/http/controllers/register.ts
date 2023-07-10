@@ -19,7 +19,7 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
 
     await registerUseCase.execute({ name, email, password })
   } catch (error) {
-    return reply.status(400).send()
+    return reply.status(400).send(error)
   }
 
   return reply.status(201).send()
