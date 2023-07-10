@@ -1,21 +1,42 @@
+# Run image commands:
+# docker build -t ignite-api-solid .
+# docker run --name ignite-api-solid -p 3333:3333 ignite-api-solid
+
+# Stop container and remove image:
+# docker stop ignite-api-solid && docker rm ignite-api-solid && docker rmi ignite-api-solid
+
+# Use Node.JS Image LTS version.
 FROM node:18
 
-# Create app directory
-WORKDIR /usr/src/app
+# Create app directory.
+WORKDIR /app
 
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
+# Copy package.json and package-lock.json files
 COPY package*.json ./
 
+# Copy Prisma file
+COPY prisma ./prisma/
+
+# Copy .env file
+COPY .env ./
+
+# Copy tsconfig file
+COPY tsconfig.json ./
+
+# Install dependencies.
 RUN npm install
-# If you are building your code for production
-# RUN npm ci --omit=dev
 
-RUN npm run build
-
-# Bundle app source
+# Bundle app source.
 COPY . .
 
+# Generate Prisma Client.
+RUN npx prisma generate
+
+# Build app code.
+RUN npm run build
+
+# Container Image listening port 3333.
 EXPOSE 3333
-CMD [ "node", "build/server.js" ]
+
+# After image build, the command bellow will be executed.
+CMD [ "npm", "run", "start:migrate:prod" ]
