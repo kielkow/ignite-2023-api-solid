@@ -4,6 +4,8 @@
   "description": "GymPass style app.",
   "main": "index.js",
   "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
     "prebuild": "rimraf build",
     "build": "tsup src --out-dir build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
