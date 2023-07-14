@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it } from 'vitest'
 
 import { RegisterUseCase } from './register'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
+import { UserAlreadyExistsError } from './errors/user-already-exists-error'
 
 describe('REGISTER USE CASE', () => {
   let inMemoryUsersRepository, registerUseCase: any
@@ -25,5 +26,21 @@ describe('REGISTER USE CASE', () => {
     )
 
     expect(isPasswordCorrectlyHashed).toBeTruthy()
+  })
+
+  it('should not be able to register with same email twice', async () => {
+    await registerUseCase.execute({
+      name: 'First Jonh Doe',
+      email: 'jonhdoe@example.com',
+      password: '123456',
+    })
+
+    expect(() =>
+      registerUseCase.execute({
+        name: 'Second Jonh Doe',
+        email: 'jonhdoe@example.com',
+        password: '123456',
+      }),
+    ).rejects.toBeInstanceOf(UserAlreadyExistsError)
   })
 })
