@@ -6,6 +6,7 @@
   "scripts": {
     "test": "vitest run --coverage",
     "test:watch": "vitest",
+    "test:ui": "vitest --ui",
     "prebuild": "rimraf build",
     "build": "tsup src --out-dir build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
@@ -32,6 +33,7 @@
   },
   "dependencies": {
     "@prisma/client": "4.16.2",
+    "@vitest/ui": "0.33.0",
     "bcryptjs": "2.4.3",
     "dotenv": "16.3.1",
     "fastify": "^4.18.0",
