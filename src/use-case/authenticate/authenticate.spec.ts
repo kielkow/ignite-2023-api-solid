@@ -33,11 +33,26 @@ describe('AUTHENTICATE USE CASE', () => {
   })
 
   it('should not be able authenticate with wrong e-mail', async () => {
-    expect(() => {
+    await expect(() =>
       sut.execute({
         email: 'jonhdoe@example.com',
         password: '123456',
-      })
-    }).rejects.toBeInstanceOf(InvalidCredentialsError)
+      }),
+    ).rejects.toBeInstanceOf(InvalidCredentialsError)
+  })
+
+  it('should not be able authenticate with wrong password', async () => {
+    await inMemoryUsersRepository.create({
+      name: 'John Doe',
+      email: 'jonhdoe@example.com',
+      password_hash: await hash('123456', 6),
+    })
+
+    await expect(() =>
+      sut.execute({
+        email: 'jonhdoe@example.com',
+        password: 'wrong-password',
+      }),
+    ).rejects.toBeInstanceOf(InvalidCredentialsError)
   })
 })
