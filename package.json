@@ -9,7 +9,8 @@
     "test:ui": "vitest --ui",
     "prebuild": "rimraf build",
     "build": "tsup src --out-dir build",
-    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "format:prettier": "prettier --write \"src/**/*.ts\"",
+		"format:eslint": "eslint --fix \"src/**/*.ts\"",
     "start:dev": "tsx watch src/server.ts",
     "start:prod": "node build/server.js",
     "start:migrate:prod": "prisma migrate deploy && npm run start:prod"
