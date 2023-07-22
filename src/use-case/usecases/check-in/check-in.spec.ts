@@ -12,6 +12,7 @@ describe('CHECK-IN USE CASE', () => {
 		sut = new CheckInUseCase(inMemoryCheckInsRepository)
 
 		vi.useFakeTimers()
+		vi.setSystemTime(new Date(2023, 0, 1, 6, 0, 0))
 	})
 
 	afterEach(() => {
@@ -19,8 +20,6 @@ describe('CHECK-IN USE CASE', () => {
 	})
 
 	it('should be able to check-in', async () => {
-		vi.setSystemTime(new Date(2023, 0, 1, 6, 0, 0))
-
 		const { checkIn } = await sut.execute({
 			userId: 'user-id',
 			gymId: 'gym-id',
@@ -30,8 +29,6 @@ describe('CHECK-IN USE CASE', () => {
 	})
 
 	it('should not be able to check-in twice on the same day', async () => {
-		vi.setSystemTime(new Date(2023, 0, 1, 6, 0, 0))
-
 		await sut.execute({
 			userId: 'user-id',
 			gymId: 'gym-id',
@@ -43,5 +40,21 @@ describe('CHECK-IN USE CASE', () => {
 				gymId: 'gym-id',
 			}),
 		).rejects.toBeInstanceOf(Error)
+	})
+
+	it('should be able to check-in twice on different days', async () => {
+		await sut.execute({
+			userId: 'user-id',
+			gymId: 'gym-id',
+		})
+
+		vi.setSystemTime(new Date(2023, 0, 2, 6, 0, 0))
+
+		const { checkIn } = await sut.execute({
+			userId: 'user-id',
+			gymId: 'gym-id',
+		})
+
+		expect(checkIn.id).toEqual(expect.any(String))
 	})
 })
