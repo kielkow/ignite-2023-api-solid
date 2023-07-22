@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from 'vitest'
+import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest'
 
 import { CheckInUseCase } from './check-in'
 
@@ -10,9 +10,17 @@ describe('CHECK-IN USE CASE', () => {
 	beforeEach(() => {
 		inMemoryCheckInsRepository = new InMemoryCheckInsRepository()
 		sut = new CheckInUseCase(inMemoryCheckInsRepository)
+
+		vi.useFakeTimers()
 	})
 
-	it('should be able make an check-in', async () => {
+	afterEach(() => {
+		vi.useRealTimers()
+	})
+
+	it('should be able to check-in', async () => {
+		vi.setSystemTime(new Date(2023, 0, 1, 6, 0, 0))
+
 		const { checkIn } = await sut.execute({
 			userId: 'user-id',
 			gymId: 'gym-id',
