@@ -20,8 +20,8 @@ describe('CHECK-IN USE CASE', () => {
 
 		gym = await gymsRepository.create({
 			title: 'gym-test',
-			latitude: 0,
-			longitude: 0,
+			latitude: -27.2092052,
+			longitude: -49.6401091,
 		})
 
 		vi.useFakeTimers()
@@ -36,8 +36,8 @@ describe('CHECK-IN USE CASE', () => {
 		const { checkIn } = await sut.execute({
 			userId: 'user-id',
 			gymId: gym.id,
-			userLatitude: 0,
-			userLongitude: 0,
+			userLatitude: -27.2092052,
+			userLongitude: -49.6401091,
 		})
 
 		expect(checkIn.id).toEqual(expect.any(String))
@@ -47,16 +47,16 @@ describe('CHECK-IN USE CASE', () => {
 		await sut.execute({
 			userId: 'user-id',
 			gymId: gym.id,
-			userLatitude: 0,
-			userLongitude: 0,
+			userLatitude: -27.2092052,
+			userLongitude: -49.6401091,
 		})
 
 		await expect(() =>
 			sut.execute({
 				userId: 'user-id',
 				gymId: gym.id,
-				userLatitude: 0,
-				userLongitude: 0,
+				userLatitude: -27.2092052,
+				userLongitude: -49.6401091,
 			}),
 		).rejects.toBeInstanceOf(Error)
 	})
@@ -65,8 +65,8 @@ describe('CHECK-IN USE CASE', () => {
 		await sut.execute({
 			userId: 'user-id',
 			gymId: gym.id,
-			userLatitude: 0,
-			userLongitude: 0,
+			userLatitude: -27.2092052,
+			userLongitude: -49.6401091,
 		})
 
 		vi.setSystemTime(new Date(2023, 0, 2, 6, 0, 0))
@@ -74,10 +74,27 @@ describe('CHECK-IN USE CASE', () => {
 		const { checkIn } = await sut.execute({
 			userId: 'user-id',
 			gymId: gym.id,
-			userLatitude: 0,
-			userLongitude: 0,
+			userLatitude: -27.2092052,
+			userLongitude: -49.6401091,
 		})
 
 		expect(checkIn.id).toEqual(expect.any(String))
+	})
+
+	it('should not be able to check-in on distant gym', async () => {
+		const distantGym = await gymsRepository.create({
+			title: 'distant-gym-test',
+			latitude: -27.074279,
+			longitude: -49.4889672,
+		})
+
+		await expect(() =>
+			sut.execute({
+				userId: 'user-id',
+				gymId: distantGym.id,
+				userLatitude: -27.2092052,
+				userLongitude: -49.6401091,
+			}),
+		).rejects.toBeInstanceOf(Error)
 	})
 })
