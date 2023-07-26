@@ -2,7 +2,6 @@ import { randomUUID } from 'crypto'
 import { Gym, Prisma } from '@prisma/client'
 
 import { GymsRepository } from '../gyms-repository'
-import { Decimal } from '@prisma/client/runtime'
 
 export class InMemoryGymsRepository implements GymsRepository {
 	public gyms: Gym[] = []
@@ -15,16 +14,27 @@ export class InMemoryGymsRepository implements GymsRepository {
 		return gym
 	}
 
+	async findByTitle(title: string) {
+		const gym = this.gyms.find(
+			(gym) => gym.title.toLowerCase() === title.toLowerCase(),
+		)
+
+		if (!gym) return null
+
+		return gym
+	}
+
 	async create(data: Prisma.GymCreateInput) {
-		const { title, description, phone, latitude, longitude } = data
+		const { id, title, description, phone, latitude, longitude } = data
 
 		const gym = {
-			id: randomUUID(),
+			id: id || randomUUID(),
 			title,
 			description: description || null,
 			phone: phone || null,
-			latitude: new Decimal(Number(latitude)),
-			longitude: new Decimal(Number(longitude)),
+			latitude: new Prisma.Decimal(Number(latitude)),
+			longitude: new Prisma.Decimal(Number(longitude)),
+			created_at: new Date(),
 		}
 
 		this.gyms.push(gym)
