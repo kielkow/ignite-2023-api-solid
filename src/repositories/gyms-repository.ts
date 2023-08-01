@@ -5,4 +5,5 @@ export interface GymsRepository {
 	findByTitle(title: string): Promise<Gym | null>
 	create(data: Prisma.GymCreateInput): Promise<Gym>
 	search(query: string, page: number): Promise<Gym[]>
+	findNearby(latitude: number, longitude: number): Promise<Gym[]>
 }
