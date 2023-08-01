@@ -4,7 +4,7 @@ import { SearchGymsUseCase } from './search-gyms'
 
 import { InMemoryGymsRepository } from '@/repositories/in-memory/in-memory-gyms-repository'
 
-describe('FETCH USER CHECK-INS HISTORY USE CASE', () => {
+describe('SEARCH GYMS USE CASE', () => {
 	let gymsRepository: InMemoryGymsRepository, sut: SearchGymsUseCase
 
 	beforeEach(async () => {
