@@ -1,8 +1,8 @@
+import dayjs from 'dayjs'
 import { randomUUID } from 'crypto'
 import { CheckIn, Prisma } from '@prisma/client'
 
 import { CheckInsRepository } from '../check-ins-repository'
-import dayjs from 'dayjs'
 
 export class InMemoryCheckInsRepository implements CheckInsRepository {
 	public checkIns: CheckIn[] = []
@@ -19,6 +19,14 @@ export class InMemoryCheckInsRepository implements CheckInsRepository {
 		}
 
 		this.checkIns.push(checkIn)
+
+		return checkIn
+	}
+
+	async findById(id: string): Promise<CheckIn | null> {
+		const checkIn = this.checkIns.find((checkIn) => checkIn.id === id)
+
+		if (!checkIn) return null
 
 		return checkIn
 	}
