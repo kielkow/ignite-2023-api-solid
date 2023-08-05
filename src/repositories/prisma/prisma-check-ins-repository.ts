@@ -5,8 +5,6 @@ import { CheckInsRepository } from '../check-ins-repository'
 import { prisma } from '@/lib/prisma'
 
 export class PrismaCheckInsRepository implements CheckInsRepository {
-	public checkIns: CheckIn[] = []
-
 	async create(data: Prisma.CheckInUncheckedCreateInput) {
 		const checkIn = await prisma.checkIn.create({ data })
 
