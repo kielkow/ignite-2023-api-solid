@@ -14,7 +14,7 @@
     "start:dev": "tsx watch src/server.ts",
     "start:prod": "node build/server.js",
     "start:migrate:prod": "prisma migrate deploy && npm run start:prod",
-		"check-app-code": "npm run format:eslint && npm run build && npm run test"
+    "check-app-code": "npm run format:eslint && npm run build && npm run test"
   },
   "keywords": [],
   "author": "",
@@ -34,6 +34,7 @@
     "vitest": "0.33.0"
   },
   "dependencies": {
+    "@fastify/jwt": "7.2.0",
     "@prisma/client": "4.16.2",
     "@vitest/ui": "0.33.0",
     "bcryptjs": "2.4.3",
