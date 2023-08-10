@@ -5,5 +5,5 @@ export async function profile(request: FastifyRequest, reply: FastifyReply) {
 
 	const { user } = request
 
-	return reply.status(200).send(user)
+	return reply.status(200).send({ id: user.sub })
 }
