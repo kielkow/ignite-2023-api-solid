@@ -20,7 +20,7 @@
     "start:prod": "node build/server.js",
     "start:dev": "tsx watch src/server.ts",
     "start:migrate:prod": "prisma migrate deploy && npm run start:prod",
-    "check-app-code": "npm run format:eslint && npm run build && npm run test:coverage"
+    "check-app": "npm run format:eslint && npm run build && npm run test:coverage"
   },
   "keywords": [],
   "author": "",
