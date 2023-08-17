@@ -5,11 +5,11 @@ import { makeGetUserProfileUsecase } from '@/use-case/factories/make-get-user-pr
 export async function profile(request: FastifyRequest, reply: FastifyReply) {
 	const getUserProfile = makeGetUserProfileUsecase()
 
-	const profile = await getUserProfile.execute({ userId: request.user.sub })
+	const { user } = await getUserProfile.execute({ userId: request.user.sub })
 
 	return reply.status(200).send({
 		user: {
-			...profile,
+			...user,
 			password_hash: undefined,
 		},
 	})
