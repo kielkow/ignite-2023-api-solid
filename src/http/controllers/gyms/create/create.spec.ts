@@ -2,6 +2,8 @@ import { app } from '@/app'
 import request from 'supertest'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 
+import { createAuthenticateUser } from '@/utils/test/create-authenticate-user'
+
 describe('CREATE CONTROLLER', () => {
 	beforeAll(async () => {
 		await app.ready()
@@ -12,18 +14,7 @@ describe('CREATE CONTROLLER', () => {
 	})
 
 	it('should be able to create gym', async () => {
-		await request(app.server).post('/users').send({
-			name: 'John Doe',
-			email: 'jonhdoe@example.com',
-			password: '123456',
-		})
-
-		const authResponse = await request(app.server).post('/sessions').send({
-			email: 'jonhdoe@example.com',
-			password: '123456',
-		})
-
-		const { token } = authResponse.body
+		const { token } = await createAuthenticateUser(app)
 
 		const response = await request(app.server)
 			.post('/gyms')
