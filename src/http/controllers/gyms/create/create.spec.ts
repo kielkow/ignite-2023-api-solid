@@ -4,7 +4,7 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 
 import { createAuthenticateUser } from '@/utils/test/create-authenticate-user'
 
-describe('CREATE CONTROLLER', () => {
+describe('CREATE GYM CONTROLLER', () => {
 	beforeAll(async () => {
 		await app.ready()
 	})
