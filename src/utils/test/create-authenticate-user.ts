@@ -15,5 +15,10 @@ export async function createAuthenticateUser(app: FastifyInstance) {
 
 	const { token } = authResponse.body
 
-	return { token }
+	const profileResponse = await request(app.server)
+		.get('/me')
+		.set('Authorization', `Bearer ${token}`)
+		.send()
+
+	return { token, ...profileResponse.body.user }
 }
