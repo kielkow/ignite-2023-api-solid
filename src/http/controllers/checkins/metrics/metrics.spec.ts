@@ -1,5 +1,9 @@
 import { app } from '@/app'
-import { afterAll, beforeAll, describe, it } from 'vitest'
+import request from 'supertest'
+import { prisma } from '@/lib/prisma'
+import { afterAll, beforeAll, describe, it, expect } from 'vitest'
+
+import { createAuthenticateUser } from '@/utils/test/create-authenticate-user'
 
 describe('METRICS CHECKIN CONTROLLER', () => {
 	beforeAll(async () => {
@@ -10,5 +14,38 @@ describe('METRICS CHECKIN CONTROLLER', () => {
 		await app.close()
 	})
 
-	it('should be able to get user metrics checkin', async () => {})
+	it('should be able to get user metrics checkin', async () => {
+		const { token, id: userId } = await createAuthenticateUser(app)
+
+		const { id: gymId } = await prisma.gym.create({
+			data: {
+				title: 'Gym',
+				description: 'Muscle Gym Pro',
+				phone: '7070-7070',
+				latitude: -27.2092052,
+				longitude: -49.6401091,
+			},
+		})
+
+		await prisma.checkIn.createMany({
+			data: [
+				{
+					user_id: userId,
+					gym_id: gymId,
+				},
+				{
+					user_id: userId,
+					gym_id: gymId,
+				},
+			],
+		})
+
+		const response = await request(app.server)
+			.get('/checkins/metrics')
+			.set('Authorization', `Bearer ${token}`)
+			.send()
+
+		expect(response.statusCode).toEqual(200)
+		expect(response.body.checkInsCount).toEqual(2)
+	})
 })
