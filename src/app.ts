@@ -1,6 +1,7 @@
 import fastify from 'fastify'
 import { ZodError } from 'zod'
 import fastifyJwt from '@fastify/jwt'
+import fastifyCookie from '@fastify/cookie'
 
 import { env } from './env'
 
@@ -12,7 +13,16 @@ export const app = fastify()
 
 app.register(fastifyJwt, {
 	secret: env.JWT_SECRET,
+	sign: {
+		expiresIn: '1d',
+	},
+	cookie: {
+		cookieName: 'refreshToken',
+		signed: false,
+	},
 })
+
+app.register(fastifyCookie)
 
 app.register(usersRoutes)
 app.register(gymsRoutes)

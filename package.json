@@ -6,7 +6,7 @@
   "scripts": {
     "test:ui": "vitest --ui",
     "test:e2e": "vitest run --dir src/http",
-		"test:e2e:watch": "vitest --dir src/http",
+    "test:e2e:watch": "vitest --dir src/http",
     "test": "vitest run --dir src/use-case",
     "test:coverage": "vitest run --coverage",
     "test:watch": "vitest --dir src/use-case",
@@ -43,6 +43,7 @@
     "vitest": "0.33.0"
   },
   "dependencies": {
+    "@fastify/cookie": "9.0.4",
     "@fastify/jwt": "7.2.0",
     "@prisma/client": "4.16.2",
     "@vitest/ui": "0.33.0",
