@@ -2,6 +2,7 @@ import fastify from 'fastify'
 import { ZodError } from 'zod'
 import fastifyJwt from '@fastify/jwt'
 import fastifyCookie from '@fastify/cookie'
+import fastifyCors from '@fastify/cors'
 
 import { env } from './env'
 
@@ -23,6 +24,11 @@ app.register(fastifyJwt, {
 })
 
 app.register(fastifyCookie)
+
+app.register(fastifyCors, {
+	origin: true,
+	credentials: true,
+})
 
 app.register(usersRoutes)
 app.register(gymsRoutes)
