@@ -14,7 +14,7 @@ describe('CREATE GYM CONTROLLER', () => {
 	})
 
 	it('should be able to create gym', async () => {
-		const { token } = await createAuthenticateUser(app)
+		const { token } = await createAuthenticateUser(app, true)
 
 		const response = await request(app.server)
 			.post('/gyms')
